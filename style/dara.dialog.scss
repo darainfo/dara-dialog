@@ -1,0 +1,190 @@
+@import "_icon.scss";
+
+.dara-dialog-hidden {
+  visibility: visible;
+  width: 0px;
+  height: 0px;
+  z-index: 1000;
+}
+
+.dara-dialog-wrapper {
+  --dark: #155724;
+  --light: #ffffff;
+  --font-color: #000000;
+  --bg-color: #ffffff;
+  --bg-header: #ffffff;
+  --border: #d4d4d4;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  z-index: 10000;
+  position: fixed;
+  width: 250px;
+  width: 400px;
+  color: var(--font-color);
+
+  &.hide {
+    display: none;
+  }
+
+  &.maximise {
+    width: calc(100% - 20px) !important;
+    height: calc(100% - 20px) !important;
+    top: 10px !important;
+    left: 10px !important;
+  }
+
+  > .dara-dialog {
+    border-radius: 4px;
+    height: 100%;
+    position: relative;
+    background: var(--bg-color);
+
+    animation: fadeIn 1s;
+    animation-fill-mode: forwards;
+
+    > .dialog-header {
+      width: 100%;
+      height: 40px;
+      padding: 10px 30px 10px 20px;
+      background: var(--bg-color);
+      border: var(--border);
+      border-radius: 4px 4px 0px 0px;
+      cursor: move;
+      > .dialog-title {
+      }
+
+      > .btn-area {
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        font-size: 1.5rem;
+
+        > .dialog-maximise {
+          cursor: pointer;
+        }
+
+        > .dialog-close {
+          cursor: pointer;
+        }
+      }
+    }
+
+    > .dialog-body {
+      padding: 0px 10px 10px 10px;
+      height: calc(100% - 40px - 35px);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+
+      > .dialog-content {
+        height: 100%;
+        > .dialog-frame {
+          width: 100%;
+          height: 100%;
+          border: 0px;
+        }
+      }
+    }
+
+    > .dialog-footer {
+      height: 40px;
+      > .btn-area {
+        text-align: right;
+        padding: 5px;
+      }
+    }
+
+    .dialog-btn {
+      border-radius: 4px;
+      background-color: #f2f7f5; /* Green */
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      padding: 3px 5px;
+      margin-right: 10px;
+      cursor: pointer;
+
+      &.primary {
+        background-color: #cce5ff;
+        border-color: #b8daff;
+        color: var(--light);
+      }
+
+      &.secondary {
+        background-color: #e2e3e5;
+        border-color: #d6d8db;
+        color: var(--light);
+      }
+
+      &.info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: var(--dark);
+      }
+
+      &.success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: var(--dark);
+      }
+
+      &.warning {
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        color: var(--dark);
+      }
+
+      &.danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: var(--light);
+      }
+    }
+
+    &.hide {
+      animation: fadeOut 0.5s;
+      animation-fill-mode: forwards;
+      //animation: daradialogHide 0.3s ease forwards;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes daradialogHide {
+  0% {
+    transform: translateX(-10px);
+  }
+
+  40% {
+    transform: translateX(0%);
+  }
+
+  80% {
+    transform: translateX(-5%);
+  }
+
+  100% {
+    transform: translateX(calc(100% + 20px));
+  }
+}

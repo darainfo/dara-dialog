@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Dialog Notification - Darainfo</title>
+  <link rel="stylesheet" href="../dist/dara.dialog.min.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body onload="dialogView()">
+
+  <div style="padding-top:80px;">
+    <div class="dialog-button">
+      <button type="button" onclick="addItem()">Add</button>
+    </div>
+  </div>
+
+  <div style="padding:10px">
+    <h2>Dialog message</h2>
+    <textarea id="dialogMessage" rows="3" style="width:300px;">Dialog message</textarea>
+  </div>
+
+</body>
+
+</html>
+
+<style>
+  body {
+    background-color: #34495E;
+  }
+
+  .dialog-button button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+</style>
+
+<script>
+  var dialogObj;
+  function dialogView() {
+    new Dialog({
+      title: 'dialog', width: '500px', height: '300px', url: 'https://www.naver.com', buttons: [
+        {
+          label: 'close', styleClass: "info", callback: () => {
+            console.log('close')
+          }
+        }
+        , {
+          label: 'Cancel', callback: () => {
+            console.log('Cancel')
+          }
+        }
+      ]
+    });
+  }
+
+  function addItem() {
+    dialogObj.show({ text: document.getElementById('dialogMessage').value, style: 'info' })
+  }
+
+
+</script>
