@@ -4,24 +4,23 @@
 export class Dialog {
   constructor(options: any);
   options: any;
-  viewItemCount: number;
+  idx: number;
   dialogWrapperElement: HTMLDivElement;
+
   /**
-   * add dialog item
-   * @param {*} item
+   * maximise hide
+   *
    */
-  addItem(item: any): void;
+  maximise(): void;
   /**
    * show dialog message
-   * @param {*} viewItems
-   * @returns
+   *
    */
-  show: (viewItems: any) => this;
+  show: () => void;
   /**
    * dialog hide
-   * @param {*} dialog
    */
-  hide(dialog: any): void;
+  hide(): void;
   /**
    * dialog destroy
    */

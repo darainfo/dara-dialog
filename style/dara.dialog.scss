@@ -49,15 +49,20 @@
     transform: initial;
   }
 
-  &.move-on .dialog-move-overay{
-    display: block !important;
-  }
+  &.move-on{
+    //user-select: none;
+    .dialog-move-overay{
+      display: block !important;
+      
+    }
+  } 
 
   &.maximise {
-    width: calc(100% - 20px) !important;
-    height: calc(100% - 20px) !important;
-    top: 10px !important;
-    left: 10px !important;
+    width: calc(100% - 6px) !important;
+    height: calc(100% - 6px) !important;
+    top: 3px !important;
+    left: 3px !important;
+    transform: initial;
   }
 
   > .dara-dialog {
@@ -72,7 +77,6 @@
 
     > .dialog-header {
       width: 100%;
-      user-select: none;
       height: 40px;
       padding: 10px 30px 10px 20px;
       background: var(--bg-header-color);
@@ -127,10 +131,10 @@
     }
 
     > .dialog-footer {
-      height: 40px;
+      height: 45px;
       > .btn-area {
         text-align: right;
-        padding: 5px;
+        padding: 12px 5px 0px;
       }
     }
 

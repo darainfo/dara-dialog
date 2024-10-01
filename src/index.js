@@ -9,16 +9,6 @@ const styleClassMap = {
   danger: "danger",
 };
 
-const defaultdialogItem = {
-  title: "", // 제목
-  text: "", // 내용
-  enableCloseButton: true, // 닫기 버튼 활성화여부
-  enableMove: true, // dialog drag move 활성화
-  //style: "success", //  백그라운드 색깔.  | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger'
-  textColor: "#000000", // 글자 색
-  enableProgress: true, //  프로그래스 바 사용여부.
-};
-
 let defaultOptions = {
   width: "400px",
   height: "300px",
@@ -26,6 +16,8 @@ let defaultOptions = {
   isModal : false,
   // 자동 열기 여부
   autoOpen: true,
+  draggable :true, // drag 가능여부
+  resizable: false, // 창 리사이즈 여부
   enableHeader: true, // 헤더 영역 보일지 여부
   enableFooter: true, // 하단 버튼 영역 보일지 여부
   enableMaxButton: true, // 최대화 버튼
@@ -61,7 +53,7 @@ export class Dialog {
     this.idx = DIALOG_IDX += 1;
 
     const dialogWrapperElement = document.createElement("div");
-    dialogWrapperElement.className = `dara-dialog-wrapper dd-${DIALOG_IDX}`;
+    dialogWrapperElement.className = `dara-dialog-wrapper hide dd-${DIALOG_IDX}`;
     dialogWrapperElement.style = `z-index:${this.options.zIndex+DIALOG_IDX};width:${this.options.width};height:${this.options.height};`;
 
     dialogHiddenElement().appendChild(dialogWrapperElement);
@@ -69,7 +61,7 @@ export class Dialog {
 
     this.dialogTemplate();
 
-    if (this.options.enableMove !== false) {
+    if (this.options.draggable !== false) {
       this.initDrag();
     }
 
@@ -94,10 +86,11 @@ export class Dialog {
 
     let offsetX, offsetY, dialogWidth, dialogHeight;
 
-    let isMove = false; 
+    let isDrag = false; 
 
     this.addEvent(dragElement, "mousedown touchdown", (e) => {
-      var tagName = e.target.tagName;
+      const tagName = e.target.tagName;
+      
       if (tagName.search(/(input|textarea|select|button)/gi) > -1) {
         return true;
       }
@@ -106,18 +99,19 @@ export class Dialog {
         return false;
       }
 
+      e.preventDefault();
+
       dialogWidth = dialogElement.clientWidth;
       dialogHeight = dialogElement.clientHeight;
 
       isDragging = true;
       offsetX = e.clientX - dialogElement.getBoundingClientRect().left;
       offsetY = e.clientY - dialogElement.getBoundingClientRect().top;
-      dragElement.style.cursor = "move";
 
-      if(!isMove){
+      if(!isDrag){
         this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
 
-        isMove = true; 
+        isDrag = true; 
         dialogElement.classList.add('move');
       }
 
@@ -136,7 +130,6 @@ export class Dialog {
 
     const onMouseUp = () => {
       isDragging = false;
-      dragElement.style.cursor = "grab";
 
       dialogElement.classList.remove('move-on');
       this.removeEvent(document, "mousemove touchmove", onMouseMove)
@@ -194,7 +187,7 @@ export class Dialog {
       `<div class="dialog-body" style="height: calc(100% ${
         enableHeader ? " - 40px" : ""
       }${
-        this.options.enableFooter ? " - 35px" : ""
+        this.options.enableFooter ? " - 45px" : ""
       })"><div class="dialog-move-overay"></div><div class="dialog-content">`
     );
 
@@ -279,7 +272,7 @@ export class Dialog {
   /**
    * dialog hide
    */
-  hide() {
+  hide = ()=>{
     this.dialogWrapperElement.classList.add("hide");
 
     if(this.options.isModal ===true){
@@ -289,9 +282,9 @@ export class Dialog {
 
   /**
    * maximise hide
-   * @param {*} dialog
+   * 
    */
-  maximise() {
+  maximise=()=> {
     const classList = this.dialogWrapperElement.classList;
     if (classList.contains("maximise")) {
       classList.remove("maximise");

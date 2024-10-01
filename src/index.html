@@ -14,7 +14,8 @@
 
   <div style="padding-top:80px;">
     <div class="dialog-button">
-      <button type="button" onclick="viewDialog()">view dialog</button>
+      <button type="button" onclick="dialogEvent('show')">Show</button>
+      <button type="button" onclick="dialogEvent('max')">Max</button>
     </div>
   </div>
 
@@ -41,10 +42,10 @@
 </style>
 
 <script>
-  var dialogObj;
+  let dialogObj;
   function dialogView() {
     dialogObj = new Dialog({
-      title: 'dialog', width: '500px', height: '300px', isModal:true, url: 'https://www.naver.com', buttons: [
+      title: 'dialog', width: '500px', height: '300px', isModal:true, autoOpen : false, url: 'https://www.naver.com', buttons: [
         {
           label: 'ok', styleClass: "info", callback: (e) => {
             alert('ok')
@@ -58,10 +59,10 @@
       ]
     });
 
-    //return ; 
+    return ; 
 
     new Dialog({
-      title: 'dialog2222', width: '200px', height: '150px', isModal:true, template: 'https://www.naver.com', buttons: [
+      title: 'dialog2222', width: '200px', height: '150px', isModal1:true, template: 'https://www.naver.com', buttons: [
         {
           label: 'close', styleClass: "info", callback: (e) => {
             alert('11')
@@ -78,8 +79,18 @@
     });
   }
 
-  function viewDialog() {
-    dialogObj.show()
+  function dialogEvent(mode) {
+    switch (mode) {
+      case 'show':
+       dialogObj.show()
+        break;
+      case 'max':
+       dialogObj.maximise()
+        break;
+    
+      default:
+        break;
+    }
   }
 
 
