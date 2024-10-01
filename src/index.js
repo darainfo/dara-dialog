@@ -58,7 +58,7 @@ export class Dialog {
     }
 
     this.options = Object.assign({}, defaultOptions, options);
-    DIALOG_IDX += 1;
+    this.idx = DIALOG_IDX += 1;
 
     const dialogWrapperElement = document.createElement("div");
     dialogWrapperElement.className = `dara-dialog-wrapper dd-${DIALOG_IDX}`;
@@ -264,11 +264,11 @@ export class Dialog {
    * @returns
    */
   show = () => {
-
+    this.dialogWrapperElement.classList.remove("hide");
     if(this.options.isModal ===true){
       const dialogOverrayElement = document.createElement("div");
       dialogOverrayElement.className = 'dara-dialog-overlay';
-      dialogOverrayElement.style = `z-index:${this.options.zIndex+DIALOG_IDX}`;
+      dialogOverrayElement.style = `z-index:${this.options.zIndex+this.idx}`;
       dialogHiddenElement().prepend(dialogOverrayElement);
       this.dialogOverrayElement = dialogOverrayElement;
     }

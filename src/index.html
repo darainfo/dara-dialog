@@ -14,7 +14,7 @@
 
   <div style="padding-top:80px;">
     <div class="dialog-button">
-      <button type="button" onclick="addItem()">Add</button>
+      <button type="button" onclick="viewDialog()">view dialog</button>
     </div>
   </div>
 
@@ -43,18 +43,16 @@
 <script>
   var dialogObj;
   function dialogView() {
-    new Dialog({
+    dialogObj = new Dialog({
       title: 'dialog', width: '500px', height: '300px', isModal:true, url: 'https://www.naver.com', buttons: [
         {
-          label: 'close', styleClass: "info", callback: (e) => {
-            alert('11')
-            console.log(e)
+          label: 'ok', styleClass: "info", callback: (e) => {
+            alert('ok')
           }
         }
         , {
           label: 'Cancel', callback: (e) => {
-            alert('22')
-            console.log(e)
+            dialogObj.hide();
           }
         }
       ]
@@ -80,8 +78,8 @@
     });
   }
 
-  function addItem() {
-    dialogObj.show({ text: document.getElementById('dialogMessage').value, style: 'info' })
+  function viewDialog() {
+    dialogObj.show()
   }
 
 

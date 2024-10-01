@@ -67,7 +67,7 @@
     position: relative;
     background: var(--bg-color);
 
-    animation: fadeIn 1s;
+    animation: fadeIn 0.5s;
     animation-fill-mode: forwards;
 
     > .dialog-header {
@@ -182,7 +182,7 @@
     }
 
     &.hide {
-      animation: fadeOut 0.5s;
+      animation: fadeOut 0.3s;
       animation-fill-mode: forwards;
       //animation: daradialogHide 0.3s ease forwards;
     }
