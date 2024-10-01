@@ -28,10 +28,7 @@
 </html>
 
 <style>
-  body {
-    background-color: #34495E;
-  }
-
+ 
   .dialog-button button {
     border: none;
     outline: none;
@@ -47,15 +44,36 @@
   var dialogObj;
   function dialogView() {
     new Dialog({
-      title: 'dialog', width: '500px', height: '300px', url: 'https://www.naver.com', buttons: [
+      title: 'dialog', width: '500px', height: '300px', isModal:true, url: 'https://www.naver.com', buttons: [
         {
-          label: 'close', styleClass: "info", callback: () => {
-            console.log('close')
+          label: 'close', styleClass: "info", callback: (e) => {
+            alert('11')
+            console.log(e)
           }
         }
         , {
-          label: 'Cancel', callback: () => {
-            console.log('Cancel')
+          label: 'Cancel', callback: (e) => {
+            alert('22')
+            console.log(e)
+          }
+        }
+      ]
+    });
+
+    //return ; 
+
+    new Dialog({
+      title: 'dialog2222', width: '200px', height: '150px', isModal:true, template: 'https://www.naver.com', buttons: [
+        {
+          label: 'close', styleClass: "info", callback: (e) => {
+            alert('11')
+            console.log(e)
+          }
+        }
+        , {
+          label: 'Cancel', callback: (e) => {
+            alert('22')
+            console.log(e)
           }
         }
       ]

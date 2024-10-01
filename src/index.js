@@ -23,6 +23,7 @@ let defaultOptions = {
   width: "400px",
   height: "300px",
   style: "",
+  isModal : false,
   // 자동 열기 여부
   autoOpen: true,
   enableHeader: true, // 헤더 영역 보일지 여부
@@ -61,7 +62,8 @@ export class Dialog {
 
     const dialogWrapperElement = document.createElement("div");
     dialogWrapperElement.className = `dara-dialog-wrapper dd-${DIALOG_IDX}`;
-    dialogWrapperElement.style = `width:${this.options.width};z-index:${this.options.zIndex};`;
+    dialogWrapperElement.style = `z-index:${this.options.zIndex+DIALOG_IDX};width:${this.options.width};height:${this.options.height};`;
+
     dialogHiddenElement().appendChild(dialogWrapperElement);
     this.dialogWrapperElement = dialogWrapperElement;
 
@@ -80,6 +82,9 @@ export class Dialog {
     defaultOptions = Object.assign({}, defaultOptions, options);
   }
 
+  /**
+   * init drag
+   */
   initDrag() {
     const dialogElement = this.dialogWrapperElement;
     const dragElement =
@@ -87,12 +92,11 @@ export class Dialog {
 
     let isDragging = false;
 
-    let offsetX, offsetY;
+    let offsetX, offsetY, dialogWidth, dialogHeight;
 
-    const dialogWidth = dialogElement.clientWidth;
-    const dialogHeight = dialogElement.clientHeight;
+    let isMove = false; 
 
-    dragElement.addEventListener("mousedown", (e) => {
+    this.addEvent(dragElement, "mousedown touchdown", (e) => {
       var tagName = e.target.tagName;
       if (tagName.search(/(input|textarea|select|button)/gi) > -1) {
         return true;
@@ -102,25 +106,31 @@ export class Dialog {
         return false;
       }
 
+      dialogWidth = dialogElement.clientWidth;
+      dialogHeight = dialogElement.clientHeight;
+
       isDragging = true;
       offsetX = e.clientX - dialogElement.getBoundingClientRect().left;
       offsetY = e.clientY - dialogElement.getBoundingClientRect().top;
       dragElement.style.cursor = "move";
 
-      document.addEventListener("mousemove", onMouseMove);
+      if(!isMove){
+        this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
 
-      document.addEventListener("mouseup", onMouseUp);
-    });
+        isMove = true; 
+        dialogElement.classList.add('move');
+      }
 
+      dialogElement.classList.add('move-on');
+
+      this.addEvent(document, "mousemove touchmove", onMouseMove)
+
+      this.addEvent(document, "mouseup touchup", onMouseUp)
+    })
+    
     const onMouseMove = (e) => {
       if (isDragging) {
-        const newX = e.clientX - offsetX;
-        const newY = e.clientY - offsetY;
-        const maxX = window.innerWidth - dialogWidth;
-        const maxY = window.innerHeight - dialogHeight;
-
-        dialogElement.style.left = Math.min(Math.max(newX, 0), maxX) + "px";
-        dialogElement.style.top = Math.min(Math.max(newY, 0), maxY) + "px";
+        this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
       }
     };
 
@@ -128,9 +138,27 @@ export class Dialog {
       isDragging = false;
       dragElement.style.cursor = "grab";
 
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+      dialogElement.classList.remove('move-on');
+      this.removeEvent(document, "mousemove touchmove", onMouseMove)
+      this.removeEvent(document, "mouseup touchup", onMouseUp)
     };
+  }
+
+  /**
+   * dialog position
+   * 
+   * @param {Event} e event
+   * @param {Number} offsetX offset x
+   * @param {Number} offsetY offset y   
+   * @param {Number} dialogWidth dialog width
+   * @param {Number} dialogHeight dialog height
+   */
+  setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight){
+    const minX = Math.min(Math.max(e.clientX - offsetX, 0), window.innerWidth - dialogWidth);
+    const minY = Math.min(Math.max(e.clientY - offsetY, 0), window.innerHeight - dialogHeight);
+
+    this.dialogWrapperElement.style.left = (minX > 0 ? minX:0) + "px";
+    this.dialogWrapperElement.style.top = (minY > 0 ? minY:0) + "px";
   }
 
   dialogTemplate() {
@@ -167,7 +195,7 @@ export class Dialog {
         enableHeader ? " - 40px" : ""
       }${
         this.options.enableFooter ? " - 35px" : ""
-      })"><div class="dialog-content">`
+      })"><div class="dialog-move-overay"></div><div class="dialog-content">`
     );
 
     if (this.options.url) {
@@ -190,11 +218,11 @@ export class Dialog {
     if (this.options.enableFooter !== false) {
       dialogHtml.push('<div class="dialog-footer"><div class="btn-area">');
 
-      for (var i = 0; i < buttons.length; i++) {
+      for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
         const styleClass = button.styleClass ?? "success";
         dialogHtml.push(
-          `<span class="dialog-btn ${styleClass}">${button.label}</span>`
+          `<span class="dialog-btn dialog-btn-${i} ${styleClass}">${button.label}</span>`
         );
       }
 
@@ -216,6 +244,18 @@ export class Dialog {
         this.hide(dialog);
       });
     }
+
+    if (this.options.enableFooter !== false) {
+      for (let i = 0; i < buttons.length; i++) {
+        const button = buttons[i];
+        const btnElement = this.dialogWrapperElement.querySelector(`.dialog-footer .dialog-btn-${i}`); 
+        btnElement.addEventListener("mousedown", (e) => {
+          if(button.callback){
+            button.callback(e);
+          }
+        });
+      }
+    }
   }
 
   /**
@@ -224,6 +264,15 @@ export class Dialog {
    * @returns
    */
   show = () => {
+
+    if(this.options.isModal ===true){
+      const dialogOverrayElement = document.createElement("div");
+      dialogOverrayElement.className = 'dara-dialog-overlay';
+      dialogOverrayElement.style = `z-index:${this.options.zIndex+DIALOG_IDX}`;
+      dialogHiddenElement().prepend(dialogOverrayElement);
+      this.dialogOverrayElement = dialogOverrayElement;
+    }
+
     return this;
   };
 
@@ -232,6 +281,10 @@ export class Dialog {
    */
   hide() {
     this.dialogWrapperElement.classList.add("hide");
+
+    if(this.options.isModal ===true){
+      this.dialogOverrayElement.remove();
+    }
   }
 
   /**
@@ -249,6 +302,18 @@ export class Dialog {
 
   isMaximise() {
     return this.dialogWrapperElement.classList.contains("maximise");
+  }
+
+  addEvent(element, events, fnHandler){
+    events.split(" ").forEach(function(e){
+      element.addEventListener(e, fnHandler, false);
+    });
+  }
+
+  removeEvent(element, events, fnHandler){
+    events.split(" ").forEach(function(e){
+      element.removeEventListener(e, fnHandler);
+    });
   }
 
   /**
