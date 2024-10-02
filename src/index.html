@@ -29,7 +29,6 @@
 </html>
 
 <style>
- 
   .dialog-button button {
     border: none;
     outline: none;
@@ -42,10 +41,14 @@
 </style>
 
 <script>
+
+  for (var i = 0; i < 1000; i++) {
+    document.body.append(' <h2>dialog message</h2>');
+  }
   let dialogObj;
   function dialogView() {
     dialogObj = new Dialog({
-      title: 'dialog', width: '500px', height: '300px', isModal:true, autoOpen : false, url: 'https://www.naver.com', buttons: [
+      title: 'dialog', width: '500px', height: 'auto', isModal: true, resizable: true, autoOpen1: false, template: 'https://www.naver.com', buttons: [
         {
           label: 'ok', styleClass: "info", callback: (e) => {
             alert('ok')
@@ -59,10 +62,10 @@
       ]
     });
 
-    return ; 
+    return;
 
     new Dialog({
-      title: 'dialog2222', width: '200px', height: '150px', isModal1:true, template: 'https://www.naver.com', buttons: [
+      title: 'dialog2222', width: '200px', height: '150px', isModal1: true, template: 'https://www.naver.com', buttons: [
         {
           label: 'close', styleClass: "info", callback: (e) => {
             alert('11')
@@ -82,12 +85,12 @@
   function dialogEvent(mode) {
     switch (mode) {
       case 'show':
-       dialogObj.show()
+        dialogObj.show()
         break;
       case 'max':
-       dialogObj.maximise()
+        dialogObj.maximise()
         break;
-    
+
       default:
         break;
     }
