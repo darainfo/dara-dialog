@@ -34,6 +34,8 @@
   position: fixed;
   width: 250px;
   width: 400px;
+  min-height: 130px;
+  min-width: 230px;
   color: var(--font-color);
   top: 45%;
   left: 50%;
@@ -43,7 +45,7 @@
     display: none;
   }
 
-  &.move {
+  &.transform-disable {
     transform: initial;
   }
 
@@ -124,6 +126,7 @@
       height: calc(100% - 40px - 35px);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+      min-height: 50px;
       position: relative;
 
       > .dialog-content {

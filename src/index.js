@@ -105,6 +105,15 @@ export class Dialog {
       dialogWidth = dialogElement.clientWidth;
       dialogHeight = dialogElement.clientHeight;
 
+      if (!dialogElement.classList.contains("transform-disable")) {
+        const offsetX = e.clientX - dialogElement.getBoundingClientRect().left;
+        const offsetY = e.clientY - dialogElement.getBoundingClientRect().top;
+
+        this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
+
+        dialogElement.classList.add("transform-disable");
+      }
+
       this.addEvent(document, "mousemove touchmove", onResizeMouseMove);
 
       this.addEvent(document, "mouseup touchup", onResizeMouseUp);
@@ -123,14 +132,13 @@ export class Dialog {
 
       const oe1 = e.touches;
 
-      // 리사이즈  처리 할것.
-
       moveTimer = setTimeout(() => {
         startTime = -1;
         let moveX = (oe1 && oe1[0] ? oe1[0].pageX : e.pageX) - startX,
           moveY = (oe1 && oe1[0] ? oe1[0].pageY : e.pageY) - startY;
 
         dialogElement.style.width = dialogWidth + moveX + "px";
+
         dialogElement.style.height = dialogHeight + moveY + "px";
       }, moveDelay);
     };
@@ -180,7 +188,7 @@ export class Dialog {
         this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
 
         isDrag = true;
-        dialogElement.classList.add("move");
+        dialogElement.classList.add("transform-disable");
       }
 
       dialogElement.classList.add("move-on");
