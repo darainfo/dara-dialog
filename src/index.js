@@ -24,6 +24,7 @@ let defaultOptions = {
   enableCloseButton: true, //  닫기 버튼 활성화 여부
   zIndex: 10000, // css z-index
   buttons: [],
+  moveDelay: 15,
 };
 
 function dialogHiddenElement() {
@@ -81,7 +82,65 @@ export class Dialog {
     defaultOptions = Object.assign({}, defaultOptions, options);
   }
 
-  initResize() {}
+  initResize() {
+    const dialogElement = this.dialogWrapperElement;
+    const reslzeElement =
+      this.dialogWrapperElement.querySelectorAll(".resizer");
+
+    let dialogWidth, dialogHeight;
+    let startX, startY;
+
+    this.addEvent(reslzeElement, "mousedown touchdown", (e) => {
+      if (this.isMaximise()) {
+        return false;
+      }
+
+      e.preventDefault();
+
+      const oe = e.touches;
+
+      startX = oe && oe[0] ? oe[0].pageX : e.pageX;
+      startY = oe && oe[0] ? oe[0].pageY : e.pageY;
+
+      dialogWidth = dialogElement.clientWidth;
+      dialogHeight = dialogElement.clientHeight;
+
+      this.addEvent(document, "mousemove touchmove", onResizeMouseMove);
+
+      this.addEvent(document, "mouseup touchup", onResizeMouseUp);
+    });
+    let startTime = -1;
+    let moveTimer;
+    const moveDelay = this.options.moveDelay;
+    const onResizeMouseMove = (e) => {
+      if (startTime == -1) {
+        startTime = new Date().getTime();
+      }
+
+      if (new Date().getTime() - moveDelay <= startTime) {
+        clearTimeout(moveTimer);
+      }
+
+      const oe1 = e.touches;
+
+      // 리사이즈  처리 할것.
+
+      moveTimer = setTimeout(() => {
+        startTime = -1;
+        let moveX = (oe1 && oe1[0] ? oe1[0].pageX : e.pageX) - startX,
+          moveY = (oe1 && oe1[0] ? oe1[0].pageY : e.pageY) - startY;
+
+        dialogElement.style.width = dialogWidth + moveX + "px";
+        dialogElement.style.height = dialogHeight + moveY + "px";
+      }, moveDelay);
+    };
+
+    const onResizeMouseUp = () => {
+      clearTimeout(moveTimer);
+      this.removeEvent(document, "mousemove touchmove", onResizeMouseMove);
+      this.removeEvent(document, "mouseup touchup", onResizeMouseUp);
+    };
+  }
 
   /**
    * init drag
@@ -130,15 +189,29 @@ export class Dialog {
 
       this.addEvent(document, "mouseup touchup", onMouseUp);
     });
-
+    let startTime = -1;
+    let moveTimer;
+    const moveDelay = this.options.moveDelay;
     const onMouseMove = (e) => {
       if (isDragging) {
-        this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
+        if (startTime == -1) {
+          startTime = new Date().getTime();
+        }
+
+        if (new Date().getTime() - moveDelay <= startTime) {
+          clearTimeout(moveTimer);
+        }
+
+        moveTimer = setTimeout(() => {
+          startTime = -1;
+          this.setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight);
+        }, moveDelay);
       }
     };
 
     const onMouseUp = () => {
       isDragging = false;
+      clearTimeout(moveTimer);
 
       dialogElement.classList.remove("move-on");
       this.removeEvent(document, "mousemove touchmove", onMouseMove);
@@ -333,15 +406,27 @@ export class Dialog {
     return this.dialogWrapperElement.classList.contains("maximise");
   }
 
-  addEvent(element, events, fnHandler) {
+  addEvent(elements, events, fnHandler) {
     events.split(" ").forEach(function (e) {
-      element.addEventListener(e, fnHandler, false);
+      if (elements instanceof NodeList) {
+        for (let element of elements) {
+          element.addEventListener(e, fnHandler, false);
+        }
+      } else {
+        elements.addEventListener(e, fnHandler, false);
+      }
     });
   }
 
-  removeEvent(element, events, fnHandler) {
+  removeEvent(elements, events, fnHandler) {
     events.split(" ").forEach(function (e) {
-      element.removeEventListener(e, fnHandler);
+      if (elements instanceof NodeList) {
+        for (let element of elements) {
+          element.removeEventListener(e, fnHandler);
+        }
+      } else {
+        elements.removeEventListener(e, fnHandler);
+      }
     });
   }
 

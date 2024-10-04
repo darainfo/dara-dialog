@@ -48,14 +48,15 @@
   }
 
   &.move-on {
-    //user-select: none;
     .dialog-move-overay {
       display: block !important;
     }
-  }
 
-  .resizable {
-    resize: both;
+    .resizer {
+      display: none;
+      position: relative;
+      z-index: 0;
+    }
   }
 
   &.maximise {
@@ -64,6 +65,14 @@
     top: 3px !important;
     left: 3px !important;
     transform: initial;
+
+    .resizer {
+      display: none;
+    }
+
+    .dialog-header {
+      cursor: default !important;
+    }
   }
 
   > .dara-dialog {
@@ -72,9 +81,6 @@
     height: 100%;
     position: relative;
     background: var(--bg-color);
-
-    animation: fadeIn 0.5s;
-    animation-fill-mode: forwards;
 
     > .dialog-header {
       width: 100%;
