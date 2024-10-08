@@ -10,8 +10,8 @@ const styleClassMap = {
 };
 
 let defaultOptions = {
-  width: "400px",
-  height: "300px",
+  width: 400,
+  height: 300,
   style: "",
   isModal: false,
   // 자동 열기 여부
@@ -22,7 +22,10 @@ let defaultOptions = {
   enableFooter: true, // 하단 버튼 영역 보일지 여부
   enableMaxButton: true, // 최대화 버튼
   enableCloseButton: true, //  닫기 버튼 활성화 여부
+  minHeight: 130, // 최소 높이
+  minWidth: 230, //  최소 넓이
   zIndex: 10000, // css z-index
+  dragOverflow: true,
   buttons: [],
   moveDelay: 15,
 };
@@ -57,7 +60,13 @@ export class Dialog {
     dialogWrapperElement.className = `dara-dialog-wrapper hide dd-${DIALOG_IDX}`;
     dialogWrapperElement.style = `z-index:${
       this.options.zIndex + DIALOG_IDX
-    };width:${this.options.width};height:${this.options.height};`;
+    };width:${
+      this.options.width == "auto" ? "auto" : this.options.width + "px"
+    };height:${
+      this.options.height == "auto" ? "auto" : this.options.height + "px"
+    };min-height:${this.options.minHeight}px;min-width:${
+      this.options.minWidth
+    }px`;
 
     dialogHiddenElement().appendChild(dialogWrapperElement);
     this.dialogWrapperElement = dialogWrapperElement;
@@ -89,11 +98,24 @@ export class Dialog {
 
     let dialogWidth, dialogHeight;
     let startX, startY;
+    let moveMode = "";
+    let offsetX = -1,
+      offsetY = -1;
+
+    let isResizeTop, isResizeLeft;
 
     this.addEvent(reslzeElement, "mousedown touchdown", (e) => {
       if (this.isMaximise()) {
         return false;
       }
+
+      moveMode = e.target.getAttribute("data-mode");
+
+      isResizeTop = moveMode.indexOf("t") > -1;
+      isResizeLeft = moveMode.indexOf("l") > -1;
+
+      offsetX = isResizeLeft ? dialogElement.getBoundingClientRect().left : -1;
+      offsetY = isResizeTop ? dialogElement.getBoundingClientRect().top : -1;
 
       e.preventDefault();
 
@@ -137,9 +159,49 @@ export class Dialog {
         let moveX = (oe1 && oe1[0] ? oe1[0].pageX : e.pageX) - startX,
           moveY = (oe1 && oe1[0] ? oe1[0].pageY : e.pageY) - startY;
 
-        dialogElement.style.width = dialogWidth + moveX + "px";
+        moveY = isResizeTop ? moveY * -1 : moveY;
+        moveX = isResizeLeft ? moveX * -1 : moveX;
 
-        dialogElement.style.height = dialogHeight + moveY + "px";
+        let resizeHeight = dialogHeight + moveY,
+          resizeWidth = dialogWidth + moveX;
+
+        if (this.options.minHeight >= resizeHeight) {
+          resizeHeight = this.options.minHeight;
+          moveY = (dialogHeight - resizeHeight) * -1;
+        }
+
+        if (this.options.minWidth >= resizeWidth) {
+          resizeWidth = this.options.minWidth;
+          moveX = (dialogWidth - resizeWidth) * -1;
+        }
+
+        let topVal = -1;
+        if (isResizeTop) {
+          topVal = offsetY - moveY;
+          if (topVal <= 0) {
+            topVal = 0;
+            resizeHeight = dialogHeight + offsetY;
+          }
+          dialogElement.style.top = topVal + "px";
+        }
+
+        let leftVal = -1;
+        if (isResizeLeft) {
+          leftVal = offsetX - moveX;
+          if (leftVal <= 0) {
+            leftVal = 0;
+            resizeWidth = dialogWidth + offsetX;
+          }
+          dialogElement.style.left = leftVal + "px";
+        }
+
+        if (moveMode != "b" && moveMode != "t") {
+          dialogElement.style.width = resizeWidth + "px";
+        }
+
+        if (moveMode != "r" && moveMode != "l") {
+          dialogElement.style.height = resizeHeight + "px";
+        }
       }, moveDelay);
     };
 
@@ -237,17 +299,30 @@ export class Dialog {
    * @param {Number} dialogHeight dialog height
    */
   setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight) {
-    const minX = Math.min(
-      Math.max(e.clientX - offsetX, 0),
-      window.innerWidth - dialogWidth
-    );
-    const minY = Math.min(
-      Math.max(e.clientY - offsetY, 0),
-      window.innerHeight - dialogHeight
-    );
+    let minX, minY;
+    if (this.options.dragOverflow === false) {
+      minX = Math.min(
+        Math.max(e.clientX - offsetX, 0),
+        window.innerWidth - dialogWidth
+      );
+      minY = Math.min(
+        Math.max(e.clientY - offsetY, 0),
+        window.innerHeight - dialogHeight
+      );
+    } else {
+      minX = Math.min(
+        Math.max(e.clientX - offsetX, (dialogWidth - 80) * -1),
+        window.innerWidth - 80
+      );
 
-    this.dialogWrapperElement.style.left = (minX > 0 ? minX : 0) + "px";
-    this.dialogWrapperElement.style.top = (minY > 0 ? minY : 0) + "px";
+      minY = Math.min(
+        Math.max(e.clientY - offsetY, 0),
+        window.innerHeight - 30
+      );
+    }
+
+    this.dialogWrapperElement.style.left = minX + "px";
+    this.dialogWrapperElement.style.top = minY + "px";
   }
 
   dialogTemplate() {
@@ -325,15 +400,15 @@ export class Dialog {
 
     if (this.options.resizable === true) {
       dialogHtml.push(`
-        <div class="resizer top"></div>
-        <div class="resizer left"></div>
-        <div class="resizer right"></div>
-        <div class="resizer bottom"></div>  
+        <div class="resizer top" data-mode="t"></div>
+        <div class="resizer left" data-mode="l"></div>
+        <div class="resizer right" data-mode="r"></div>
+        <div class="resizer bottom" data-mode="b"></div>  
 
-        <div class="resizer top-left"></div>
-        <div class="resizer top-right"></div>
-        <div class="resizer bottom-left"></div>
-        <div class="resizer bottom-right"></div>
+        <div class="resizer top-left" data-mode="tl"></div>
+        <div class="resizer top-right" data-mode="tr"></div>
+        <div class="resizer bottom-left" data-mode="bl"></div>
+        <div class="resizer bottom-right" data-mode="br"></div>
       `);
     }
 

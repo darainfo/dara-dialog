@@ -20,9 +20,10 @@ module.exports = merge(common, {
   output: {
     path: path.join(__dirname, "./public"),
     filename: "dara.dialog.js",
-    libraryTarget: "umd",
+    // libraryTarget: "umd",
   },
   devServer: {
+    https: true,
     // inline: true,
     //mode: 'development',
     host: "0.0.0.0",

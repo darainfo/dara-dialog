@@ -11,7 +11,7 @@ const nodeExternals = require("webpack-node-externals");
 const packageJson = require("./package.json");
 const topBanner = `/*!
 * ${packageJson.name}  v${packageJson.version}
-* Copyright 2023-${new Date().getUTCFullYear()} darainfo and other contributors; 
+* Copyright 2024-${new Date().getUTCFullYear()} darainfo and other contributors; 
 * Licensed ${packageJson.license}
 */`;
 
@@ -19,6 +19,7 @@ process.env.TOP_BANNER = topBanner;
 
 module.exports = {
   entry: "./src/index.js",
+  target: ["web", "es5"],
   output: {
     path: path.join(__dirname, "dist"),
     filename: "dara.dialog.js",
@@ -49,7 +50,9 @@ module.exports = {
         test: /\.js|\.jsx$$/u,
         exclude: /node_modules/u,
         include: path.resolve(__dirname, "src"),
-        use: ["babel-loader"],
+        use: {
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.css$/,

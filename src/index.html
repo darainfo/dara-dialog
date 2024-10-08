@@ -41,21 +41,23 @@
 </style>
 
 <script>
-
+  var htmlStr = [];
   for (var i = 0; i < 1000; i++) {
-    document.body.append(' <h2>dialog message</h2>');
+    htmlStr.push(' <h2>dialog message</h2>');
   }
-  let dialogObj;
+
+  document.body.innerHTML = htmlStr.join('');
+  var dialogObj;
   function dialogView() {
     dialogObj = new Dialog({
-      title: 'dialog', width: '500px', height: 'auto', isModal: true, resizable: true, autoOpen1: false, template: 'https://www.naver.com', buttons: [
+      title: 'dialog', width: 500, height: 'auto', isModal: true, resizable: true, autoOpen1: false, template: 'https://www.naver.com', buttons: [
         {
-          label: 'ok', styleClass: "info", callback: (e) => {
+          label: 'ok', styleClass: "info", callback: function (e) {
             alert('ok')
           }
         }
         , {
-          label: 'Cancel', callback: (e) => {
+          label: 'Cancel', callback: function (e) {
             dialogObj.hide();
           }
         }
@@ -65,15 +67,15 @@
     return;
 
     new Dialog({
-      title: 'dialog2222', width: '200px', height: '150px', isModal1: true, template: 'https://www.naver.com', buttons: [
+      title: 'dialog2222', width: 200, height: '150px', isModal1: true, template: 'https://www.naver.com', buttons: [
         {
-          label: 'close', styleClass: "info", callback: (e) => {
+          label: 'close', styleClass: "info", callback: function (e) {
             alert('11')
             console.log(e)
           }
         }
         , {
-          label: 'Cancel', callback: (e) => {
+          label: 'Cancel', callback: function (e) {
             alert('22')
             console.log(e)
           }
