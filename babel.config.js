@@ -3,7 +3,7 @@ module.exports = {
     [
       "@babel/preset-env",
       {
-        corejs: { version: 3, proposals: true },
+        corejs: { version: 3 },
         debug: true,
         useBuiltIns: "usage",
         targets: {
@@ -19,13 +19,15 @@ module.exports = {
   plugins: [
     "@babel/plugin-transform-arrow-functions",
     "@babel/plugin-transform-block-scoping",
+    "@babel/plugin-transform-strict-mode",
+    /*
     [
       "@babel/plugin-transform-strict-mode",
       {
         strict: false,
       },
     ],
-
+*/
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-proposal-nullish-coalescing-operator",

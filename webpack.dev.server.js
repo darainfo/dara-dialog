@@ -23,7 +23,7 @@ module.exports = merge(common, {
     // libraryTarget: "umd",
   },
   devServer: {
-    https: true,
+    //https: true,
     // inline: true,
     //mode: 'development',
     host: "0.0.0.0",

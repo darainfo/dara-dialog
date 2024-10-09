@@ -58,15 +58,12 @@ export class Dialog {
 
     const dialogWrapperElement = document.createElement("div");
     dialogWrapperElement.className = `dara-dialog-wrapper hide dd-${DIALOG_IDX}`;
-    dialogWrapperElement.style = `z-index:${
-      this.options.zIndex + DIALOG_IDX
-    };width:${
-      this.options.width == "auto" ? "auto" : this.options.width + "px"
-    };height:${
-      this.options.height == "auto" ? "auto" : this.options.height + "px"
-    };min-height:${this.options.minHeight}px;min-width:${
-      this.options.minWidth
-    }px`;
+    const style = dialogWrapperElement.style;
+    style.zIndex = this.options.zIndex + DIALOG_IDX;
+    style.width = this.options.width == "auto" ? "auto" : this.options.width + "px";
+    style.height = this.options.height == "auto" ? "auto" : this.options.height + "px";
+    style.minHeight = this.options.minHeight+'px'
+    style.minWidth = this.options.minWidth+'px';
 
     dialogHiddenElement().appendChild(dialogWrapperElement);
     this.dialogWrapperElement = dialogWrapperElement;
@@ -453,8 +450,17 @@ export class Dialog {
     if (this.options.isModal === true) {
       const dialogOverrayElement = document.createElement("div");
       dialogOverrayElement.className = "dara-dialog-overlay";
-      dialogOverrayElement.style = `z-index:${this.options.zIndex + this.idx}`;
-      dialogHiddenElement().prepend(dialogOverrayElement);
+      dialogOverrayElement.style.zIndex = this.options.zIndex + this.idx;
+
+      const hiddenElement = dialogHiddenElement();
+      const firstChild = hiddenElement.firstChild;
+
+      if (firstChild) {
+        hiddenElement.insertBefore(dialogOverrayElement, firstChild);
+      } else {
+        hiddenElement.appendChild(dialogOverrayElement);
+      }
+
       this.dialogOverrayElement = dialogOverrayElement;
     }
 
@@ -468,7 +474,7 @@ export class Dialog {
     this.dialogWrapperElement.classList.add("hide");
 
     if (this.options.isModal === true) {
-      this.dialogOverrayElement.remove();
+      dialogHiddenElement().removeChild(this.dialogOverrayElement)
     }
   };
 
