@@ -9,7 +9,7 @@ Simple dialog message
 
 
 <p>
-<img src="https://user-images.githubusercontent.com/darainfo/blob/master/dialogDemo.gif"/>
+<img src="https://github.com/darainfo/dara-dialog/blob/main/dialogDemo.gif?raw=true"/>
 </p>
 
 
