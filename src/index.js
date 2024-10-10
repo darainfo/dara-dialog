@@ -1,6 +1,6 @@
 let DIALOG_IDX = 0;
 
-const styleClassMap = {
+const iconStyleMap = {
   primary: "primary",
   secondary: "secondary",
   info: "info",
@@ -9,42 +9,77 @@ const styleClassMap = {
   danger: "danger",
 };
 
+/**
+ * 다이얼로그 옵션
+ * @typedef {Object} defaultOptions
+ * @property {string, number} [width = 400] - 넓이
+ * @property {string, number} [height= 300] - 높이
+ * @property {string} styleClass - css class
+ * @property {boolean} [isModal= false] - 모달 사용여부
+ * @property {string} [icon= ""] - icon primary, secondary, info, success, warning, danger
+ * @property {boolean} [autoOpen= true] - 자동 열기 여부
+ * @property {boolean} [draggable= true] - drag 가능여부
+ * @property {boolean} [resizable= false] - 창 리사이즈 여부
+ * @property {boolean} [enableHeader= true] -  헤더 영역 보일지 여부
+ * @property {boolean} [enableFooter= true] -  하단 버튼 영역 보일지 여부
+ * @property {boolean} [enableMaxButton= true] -  최대화 버튼
+ * @property {boolean} [enableCloseButton= true] -   닫기 버튼 활성화 여부
+ * @property {number} [minHeight= 130] -  최소 높이
+ * @property {number} [minWidth= 230] -   최소 넓이
+ * @property {number} [zIndex= 10000] -  css z-index
+ * @property {string} [dragOverflow= true] - darg 창 넘어서 drag 할지 여부
+ * @property {Array} buttons= [] - dialog 하단 버튼
+ * @property {number} moveDelay= 15 -  drag delay time
+ * @property {function} afterOpen - 오픈후
+ */
+
+/** @type {defaultOptions} */
 let defaultOptions = {
   width: 400,
   height: 300,
-  style: "",
+  styleClass: "",
   isModal: false,
+  icon: "", // info,
   // 자동 열기 여부
   autoOpen: true,
-  draggable: true, // drag 가능여부
-  resizable: false, // 창 리사이즈 여부
-  enableHeader: true, // 헤더 영역 보일지 여부
-  enableFooter: true, // 하단 버튼 영역 보일지 여부
-  enableMaxButton: true, // 최대화 버튼
-  enableCloseButton: true, //  닫기 버튼 활성화 여부
-  minHeight: 130, // 최소 높이
-  minWidth: 230, //  최소 넓이
-  zIndex: 10000, // css z-index
+  // drag 가능여부
+  draggable: true,
+  // 창 리사이즈 여부
+  resizable: false,
+  // 헤더 영역 보일지 여부
+  enableHeader: true,
+  // 하단 버튼 영역 보일지 여부
+  enableFooter: true,
+  // 최대화 버튼
+  enableMaxButton: true,
+  //  닫기 버튼 활성화 여부
+  enableCloseButton: true,
+  // 최소 높이
+  minHeight: 130,
+  //  최소 넓이
+  minWidth: 230,
+  // css z-index
+  zIndex: 10000,
   dragOverflow: true,
   buttons: [],
   moveDelay: 15,
+  afterOpen: false, // open 후 호출 메소드
 };
 
 function dialogHiddenElement() {
   if (document.getElementById("daraDialogHidden") == null) {
-    document
-      .querySelector("body")
-      ?.insertAdjacentHTML(
-        "beforeend",
-        `<div id="daraDialogHidden" class="dara-dialog-hidden"></div>`
-      );
+    document.querySelector("body")?.insertAdjacentHTML("beforeend", `<div id="daraDialogHidden" class="dara-dialog-hidden"></div>`);
   }
 
   return document.getElementById("daraDialogHidden");
 }
 
 /**
- * dialog message 모듈
+ * dialog 모듈
+ *
+ * @export
+ * @class Dialog
+ * @typedef {Dialog}
  */
 export class Dialog {
   static VERSION = APP_VERSION;
@@ -62,8 +97,8 @@ export class Dialog {
     style.zIndex = this.options.zIndex + DIALOG_IDX;
     style.width = this.options.width == "auto" ? "auto" : this.options.width + "px";
     style.height = this.options.height == "auto" ? "auto" : this.options.height + "px";
-    style.minHeight = this.options.minHeight+'px'
-    style.minWidth = this.options.minWidth+'px';
+    style.minHeight = this.options.minHeight + "px";
+    style.minWidth = this.options.minWidth + "px";
 
     dialogHiddenElement().appendChild(dialogWrapperElement);
     this.dialogWrapperElement = dialogWrapperElement;
@@ -84,14 +119,20 @@ export class Dialog {
     }
   }
 
+  /**
+   * default options 셋팅
+   *
+   * @static
+   * @typedef {Object} defaultOptions
+   */
   static setOptions(options) {
     defaultOptions = Object.assign({}, defaultOptions, options);
   }
 
+  /** 사이즈 조절 초기화 */
   initResize() {
     const dialogElement = this.dialogWrapperElement;
-    const reslzeElement =
-      this.dialogWrapperElement.querySelectorAll(".resizer");
+    const reslzeElement = this.dialogWrapperElement.querySelectorAll(".resizer");
 
     let dialogWidth, dialogHeight;
     let startX, startY;
@@ -214,8 +255,7 @@ export class Dialog {
    */
   initDrag() {
     const dialogElement = this.dialogWrapperElement;
-    const dragElement =
-      this.dialogWrapperElement.querySelector(".dialog-header");
+    const dragElement = this.dialogWrapperElement.querySelector(".dialog-header");
 
     let isDragging = false;
 
@@ -298,24 +338,12 @@ export class Dialog {
   setPosition(e, offsetX, offsetY, dialogWidth, dialogHeight) {
     let minX, minY;
     if (this.options.dragOverflow === false) {
-      minX = Math.min(
-        Math.max(e.clientX - offsetX, 0),
-        window.innerWidth - dialogWidth
-      );
-      minY = Math.min(
-        Math.max(e.clientY - offsetY, 0),
-        window.innerHeight - dialogHeight
-      );
+      minX = Math.min(Math.max(e.clientX - offsetX, 0), window.innerWidth - dialogWidth);
+      minY = Math.min(Math.max(e.clientY - offsetY, 0), window.innerHeight - dialogHeight);
     } else {
-      minX = Math.min(
-        Math.max(e.clientX - offsetX, (dialogWidth - 80) * -1),
-        window.innerWidth - 80
-      );
+      minX = Math.min(Math.max(e.clientX - offsetX, (dialogWidth - 80) * -1), window.innerWidth - 80);
 
-      minY = Math.min(
-        Math.max(e.clientY - offsetY, 0),
-        window.innerHeight - 30
-      );
+      minY = Math.min(Math.max(e.clientY - offsetY, 0), window.innerHeight - 30);
     }
 
     this.dialogWrapperElement.style.left = minX + "px";
@@ -336,38 +364,19 @@ export class Dialog {
         `<div class="dialog-header" >
           ${this.options.title ?? ""}
           <div class="btn-area">
-          ${
-            this.options.enableMaxButton
-              ? `<span class="dialog-maximise"><svg width="16px" height="16px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#6c6c6c" d="M4.5 3C3.67157 3 3 3.67157 3 4.5V11.5C3 12.3284 3.67157 13 4.5 13H11.5C12.3284 13 13 12.3284 13 11.5V4.5C13 3.67157 12.3284 3 11.5 3H4.5ZM4.5 4H11.5C11.7761 4 12 4.22386 12 4.5V11.5C12 11.7761 11.7761 12 11.5 12H4.5C4.22386 12 4 11.7761 4 11.5V4.5C4 4.22386 4.22386 4 4.5 4Z" />
-              </svg>
-              </span>`
-              : ""
-          }
-          ${
-            this.options.enableCloseButton
-              ? `<span class="dialog-close"><svg width="16px" height="16px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#6c6c6c" d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z"/>
-              </svg></span>`
-              : ""
-          }
+          ${this.options.enableMaxButton ? `<span class="dialog-maximise"></span>` : ""}
+          ${this.options.enableCloseButton ? `<span class="dialog-close"></span>` : ""}
           </div>
         </div>`
       );
     }
 
     dialogHtml.push(
-      `<div class="dialog-body" style="height: calc(100% ${
-        enableHeader ? " - 40px" : ""
-      }${
-        this.options.enableFooter ? " - 45px" : ""
-      })"><div class="dialog-move-overay"></div><div class="dialog-content">`
+      `<div class="dialog-body ${iconStyleMap[this.options.icon] ?? ""}" style="height: calc(100% ${enableHeader ? " - 40px" : ""}${this.options.enableFooter ? " - 45px" : ""})"><div class="dialog-move-overay"></div><div class="dialog-content">`
     );
 
     if (this.options.url) {
-      dialogHtml.push(
-        `<iframe src="${this.options.url}" class="dialog-frame"></iframe>`
-      );
+      dialogHtml.push(`<iframe src="${this.options.url}" class="dialog-frame"></iframe>`);
     } else {
       if (typeof this.options.template === "string") {
         dialogHtml.push(this.options.template);
@@ -387,9 +396,7 @@ export class Dialog {
       for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
         const styleClass = button.styleClass ?? "success";
-        dialogHtml.push(
-          `<span class="dialog-btn dialog-btn-${i} ${styleClass}">${button.label}</span>`
-        );
+        dialogHtml.push(`<span class="dialog-btn dialog-btn-${i} ${styleClass}">${button.label}</span>`);
       }
 
       dialogHtml.push("</div></div>");
@@ -428,9 +435,7 @@ export class Dialog {
     if (this.options.enableFooter !== false) {
       for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
-        const btnElement = this.dialogWrapperElement.querySelector(
-          `.dialog-footer .dialog-btn-${i}`
-        );
+        const btnElement = this.dialogWrapperElement.querySelector(`.dialog-footer .dialog-btn-${i}`);
         btnElement.addEventListener("mousedown", (e) => {
           if (button.callback) {
             button.callback(e);
@@ -464,6 +469,10 @@ export class Dialog {
       this.dialogOverrayElement = dialogOverrayElement;
     }
 
+    if (typeof this.options.afterOpen === "function") {
+      this.options.afterOpen.call(this, this.dialogWrapperElement);
+    }
+
     return this;
   };
 
@@ -474,7 +483,7 @@ export class Dialog {
     this.dialogWrapperElement.classList.add("hide");
 
     if (this.options.isModal === true) {
-      dialogHiddenElement().removeChild(this.dialogOverrayElement)
+      dialogHiddenElement().removeChild(this.dialogOverrayElement);
     }
   };
 
@@ -523,6 +532,9 @@ export class Dialog {
    * dialog destroy
    */
   destroy = () => {
-    this.dialogWrapperElement.remove();
+    dialogHiddenElement().removeChild(this.dialogWrapperElement);
+    this.dialogWrapperElement = null;
+    this.options = null;
+    this.idx = -1;
   };
 }

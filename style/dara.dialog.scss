@@ -87,9 +87,21 @@
         top: 10px;
         right: 10px;
 
-        > .dialog-maximise,
-        > .dialog-close {
+        > .dialog-maximise {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
           cursor: pointer;
+          background-repeat: no-repeat;
+          background-image: icon(maximise, "6c6c6c");
+        }
+        > .dialog-close {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+          cursor: pointer;
+          background-repeat: no-repeat;
+          background-image: icon(close, "6c6c6c");
         }
       }
     }
@@ -112,9 +124,44 @@
       border-bottom: 1px solid #e6e6e6; // var(--border)
       min-height: 50px;
       position: relative;
+      background-repeat: no-repeat;
+      background-position: 10px 10px;
+
+      &.primary {
+        padding-left: 45px;
+        background-image: icon(primary, "2496ed");
+      }
+
+      &.secondary {
+        padding-left: 45px;
+        background-image: icon(secondary, "2496ed");
+      }
+
+      &.info {
+        padding-left: 45px;
+        background-image: icon(info, "2496ed");
+      }
+
+      &.success {
+        padding-left: 45px;
+        background-image: icon(success, "493fff");
+      }
+
+      &.warning {
+        padding-left: 45px;
+        background-image: icon(warning, "e18787");
+      }
+
+      &.danger {
+        padding-left: 45px;
+        background-image: icon(danger, "ef2e40");
+      }
 
       > .dialog-content {
         height: 100%;
+        word-break: keep-all;
+        word-wrap: break-word;
+        overflow: auto;
 
         > .dialog-frame {
           width: 100%;
@@ -288,4 +335,3 @@
     transform: translateX(calc(100% + 20px));
   }
 }
-

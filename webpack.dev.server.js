@@ -27,7 +27,7 @@ module.exports = merge(common, {
     // inline: true,
     //mode: 'development',
     host: "0.0.0.0",
-    port: 8887,
+    port: 8888,
     watchFiles: ["src/**/*"],
   },
   plugins: [

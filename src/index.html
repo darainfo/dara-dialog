@@ -20,11 +20,7 @@
     </div>
   </div>
 
-  <div style="padding:10px">
-    <h2>Dialog message</h2>
-    <textarea id="dialogMessage" rows="3" style="width:300px;">Dialog message</textarea>
-  </div>
-
+  <div id="content"></div>
 </body>
 
 </html>
@@ -47,11 +43,11 @@
     htmlStr.push(' <h2>dialog message</h2>');
   }
 
-  document.body.innerHTML = htmlStr.join('');
+  //document.getElementById("content").innerHTML = htmlStr.join('');
   var dialogObj;
   function dialogView() {
     dialogObj = new Dialog({
-      title: 'dialog', width: 500, height: 'auto', isModal: true, resizable: true, autoOpen1: false, template: 'https://www.naver.com', buttons: [
+      title: 'dialog', width: 500, height: 'auto', icon: "info", isModal: true, resizable: true, autoOpen: false, template: '<a href="https://varsql.com" target="_blank">링크 이동</a>', buttons: [
         {
           label: 'ok', styleClass: "info", callback: function (e) {
             alert('ok')
@@ -62,7 +58,9 @@
             dialogObj.hide();
           }
         }
-      ]
+      ], afterOpen: function () {
+        console.log('after open')
+      }
     });
 
     return;

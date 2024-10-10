@@ -3,34 +3,30 @@
 
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dialog Notification - Darainfo</title>
   <link rel="stylesheet" href="../dist/dara.dialog.min.css">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script src="../dist/dara.dialog.js"></script>
+
+
 </head>
 
-<body>
-</body>
-<div style="padding-top:80px;">
-  <div class="dialog-button">
-    <button type="button" onclick="addItem()">Add</button>
-  </div>
-</div>
+<body onload="dialogView()">
 
-<div style="padding:10px">
-  <h2>dialog message</h2>
-  <textarea id="dialogMessage" rows="3" style="width:300px;">dialog message</textarea>
-</div>
+  <div style="padding-top:80px;">
+    <div class="dialog-button">
+      <button type="button" onclick="dialogEvent('show')">Show</button>
+      <button type="button" onclick="dialogEvent('max')">Max</button>
+    </div>
+  </div>
+
+  <div id="content"></div>
+</body>
 
 </html>
 
 <style>
-  body {
-    background-color: #34495E;
-  }
-
   .dialog-button button {
     border: none;
     outline: none;
@@ -43,21 +39,62 @@
 </style>
 
 <script>
-
-  new Dialog({ items: [{ text: 'Top-left' }], style: 'success', duration: 3, position: { vertical: 'top', horizontal: 'left' } })
-  new Dialog({ items: ['top-center', '한글임 한글임 한글임 세종대왕'], style: 'primary', duration: 10, position: { vertical: 'top', horizontal: 'center' } })
-  var dialogObj = new Dialog({ items: ['top-right', 'test'], keepInstance: true, style: 'secondary', duration: 3, position: { vertical: 'top', horizontal: 'right' } })
-
-  new Dialog({ items: ['middle-left', 'test'], style: 'warning', duration: 10, position: { vertical: 'middle', horizontal: 'left' } })
-  new Dialog({ items: [{ text: 'middle-center' }, 'test'], style: 'success', duration: 5, position: { vertical: 'middle', horizontal: 'center' } })
-  new Dialog({ items: ['middle-right', 'test'], style: 'info', duration: 10, position: { vertical: 'middle', horizontal: 'right' } })
-
-  new Dialog({ items: ['bottom-left', 'test'], style: 'danger', duration: 10, position: { vertical: 'bottom', horizontal: 'left' } })
-  new Dialog({ items: ['bottom-center', 'test'], style: 'success', duration: 10, position: { vertical: 'bottom', horizontal: 'center' } })
-  new Dialog({ items: [{ text: 'bottom-right', title: 'title', duration: 3 }, '한글임한글임한글'], style: 'success', duration: 5000, position: { vertical: 'bottom', horizontal: 'right' } })
-
-  function addItem() {
-    dialogObj.show({ text: document.getElementById('dialogMessage').value, style: 'info' })
+  var htmlStr = [];
+  for (var i = 0; i < 1000; i++) {
+    htmlStr.push(' <h2>dialog message</h2>');
   }
+
+  //document.getElementById("content").innerHTML = htmlStr.join('');
+  var dialogObj;
+  function dialogView() {
+    dialogObj = new Dialog({
+      title: 'dialog', width: 500, height: 'auto', icon: "info", isModal: true, resizable: true, template: '<a href="https://varsql.com" target="_blank">링크 이동</a>', buttons: [
+        {
+          label: 'ok', styleClass: "info", callback: function (e) {
+            alert('ok')
+          }
+        }
+        , {
+          label: 'Cancel', callback: function (e) {
+            dialogObj.hide();
+          }
+        }
+      ]
+    });
+
+    return;
+
+    new Dialog({
+      title: 'dialog2222', width: 200, height: '150px', template: 'https://www.naver.com', buttons: [
+        {
+          label: 'close', styleClass: "info", callback: function (e) {
+            alert('11')
+            console.log(e)
+          }
+        }
+        , {
+          label: 'Cancel', callback: function (e) {
+            alert('22')
+            console.log(e)
+          }
+        }
+      ]
+    });
+  }
+
+  function dialogEvent(mode) {
+    switch (mode) {
+      case 'show':
+        dialogObj.show()
+        break;
+      case 'max':
+        dialogObj.maximise()
+        break;
+
+      default:
+        break;
+    }
+  }
+
 
 </script>
