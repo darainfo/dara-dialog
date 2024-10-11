@@ -1,8 +1,8 @@
 {
-  "name": "dara-dialog",
-  "version": "0.0.1",
+  "name": "@daracl/dialog",
+  "version": "0.0.2",
   "sideEffects": false,
-  "description": "Dara dialog Message",
+  "description": "Daracl dialog Message",
   "author": {
     "name": "darainfo",
     "email": "darainfosys@gmail.com",
@@ -10,23 +10,24 @@
   },
   "license": "MIT",
   "keywords": [
-    "daradialog",
+    "daracl-dialog",
+    "@daracl/dialog",
     "dialog",
     "darainfo",
     "message",
-    "notification",
+    "confirm",
     "javascript"
   ],
   "main": "src/index.js",
   "types": "./dist/index.d.ts",
-  "homepage": "https://github.com/darainfo/dialog",
+  "homepage": "https://github.com/darainfo/daracl.dialog",
   "bugs": {
-    "url": "https://github.com/darainfo/dialog/issues",
+    "url": "https://github.com/darainfo/daracl.dialog/issues",
     "email": "darainfosys@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/darainfo/dialog.git"
+    "url": "https://github.com/darainfo/daracl.dialog.git"
   },
   "files": [
     "dist",
@@ -34,11 +35,6 @@
     "style"
   ],
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "esbuild": "^0.18.11",
     "typescript": "^5.1.6"
   },
@@ -62,6 +58,11 @@
     "@babel/plugin-transform-arrow-functions": "^7.25.7",
     "@babel/plugin-transform-block-scoping": "^7.25.7",
     "@babel/plugin-transform-strict-mode": "^7.25.7",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.25.7",
     "@types/jest": "^29.5.1",
     "@types/node": "^20.1.0",

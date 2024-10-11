@@ -2,16 +2,10 @@
 
 Simple dialog message
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/darainfo/dara-dialog/blob/main/LICENSE)
-[![npm version](https://badge.fury.io/js/dara-dialog.svg)](https://img.shields.io/npm/v/dara-dialog)
-![npm](https://img.shields.io/npm/dt/dara-dialog)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/dara-dialog)](https://bundlephobia.com/package/dara-dialog)
-
-
-<p>
-<img src="https://github.com/darainfo/dara-dialog/blob/main/dialogDemo.gif?raw=true"/>
-</p>
-
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/darainfo/daracl.dialog/blob/main/LICENSE)
+[![npm version](https://badge.fury.io/js/daracl.dialog.svg)](https://img.shields.io/npm/v/daracl.dialog)
+![npm](https://img.shields.io/npm/dt/daracl.dialog)
+[![minzipped size](https://img.shields.io/bundlephobia/minzip/daracl.dialog)](https://bundlephobia.com/package/daracl.dialog)
 
 ## Browser Support
 
@@ -20,6 +14,9 @@ Simple dialog message
 Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |   ie 11 > |
 
 
+<p>
+<img src="https://github.com/darainfo/daracl.dialog/blob/main/demo.gif?raw=true"/>
+</p>
 
 # build
 ```

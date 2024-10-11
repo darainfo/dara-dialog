@@ -22,7 +22,7 @@ module.exports = {
   target: ["web", "es5"],
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "dara.dialog.js",
+    filename: "daracl.dialog.js",
     libraryTarget: "umd",
   },
 

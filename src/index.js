@@ -67,11 +67,11 @@ let defaultOptions = {
 };
 
 function dialogHiddenElement() {
-  if (document.getElementById("daraDialogHidden") == null) {
-    document.querySelector("body")?.insertAdjacentHTML("beforeend", `<div id="daraDialogHidden" class="dara-dialog-hidden"></div>`);
+  if (document.getElementById("daraclDialogHidden") == null) {
+    document.querySelector("body")?.insertAdjacentHTML("beforeend", `<div id="daraclDialogHidden" class="daracl-dialog-hidden"></div>`);
   }
 
-  return document.getElementById("daraDialogHidden");
+  return document.getElementById("daraclDialogHidden");
 }
 
 /**
@@ -92,7 +92,7 @@ export class Dialog {
     this.idx = DIALOG_IDX += 1;
 
     const dialogWrapperElement = document.createElement("div");
-    dialogWrapperElement.className = `dara-dialog-wrapper hide dd-${DIALOG_IDX}`;
+    dialogWrapperElement.className = `daracl-dialog-wrapper hide dd-${DIALOG_IDX}`;
     const style = dialogWrapperElement.style;
     style.zIndex = this.options.zIndex + DIALOG_IDX;
     style.width = this.options.width == "auto" ? "auto" : this.options.width + "px";
@@ -355,7 +355,7 @@ export class Dialog {
     const dialog = document.createElement("div");
     const styleClass = this.options.styleClass ?? "";
 
-    dialog.className = `dara-dialog ${styleClass}`;
+    dialog.className = `daracl-dialog ${styleClass}`;
 
     let dialogHtml = [];
 
@@ -454,7 +454,7 @@ export class Dialog {
     this.dialogWrapperElement.classList.remove("hide");
     if (this.options.isModal === true) {
       const dialogOverrayElement = document.createElement("div");
-      dialogOverrayElement.className = "dara-dialog-overlay";
+      dialogOverrayElement.className = "daracl-dialog-overlay";
       dialogOverrayElement.style.zIndex = this.options.zIndex + this.idx;
 
       const hiddenElement = dialogHiddenElement();
