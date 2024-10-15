@@ -3,9 +3,9 @@
 Simple dialog message
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/darainfo/daracl.dialog/blob/main/LICENSE)
-[![npm version](https://badge.fury.io/js/daracl.dialog.svg)](https://img.shields.io/npm/v/daracl.dialog)
-![npm](https://img.shields.io/npm/dt/daracl.dialog)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/daracl.dialog)](https://bundlephobia.com/package/daracl.dialog)
+[![npm version](https://badge.fury.io/js/@daracl%2Fdialog.svg)](https://badge.fury.io/js/@daracl%2Fdialog)
+![npm](https://img.shields.io/npm/dt/@daracl%2Fdialog)
+[![minzipped size](https://img.shields.io/bundlephobia/minzip/@daracl%2Fdialog)](https://bundlephobia.com/package/daracl.dialog)
 
 ## Browser Support
 
