@@ -22,6 +22,11 @@ module.exports = {
   target: ["web", "es5"],
   output: {
     path: path.join(__dirname, "dist"),
+    library: {
+      name: ["Daracl", "dialog"],
+      type: "var",
+      export: "default",
+    },
     filename: "daracl.dialog.js",
     libraryTarget: "umd",
   },

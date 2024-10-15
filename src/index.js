@@ -81,7 +81,7 @@ function dialogHiddenElement() {
  * @class Dialog
  * @typedef {Dialog}
  */
-export class Dialog {
+export default class Dialog {
   static VERSION = APP_VERSION;
   constructor(options) {
     if (typeof options === "string") {
@@ -117,6 +117,10 @@ export class Dialog {
     if (this.options.autoOpen !== false) {
       this.show();
     }
+  }
+
+  static create(options) {
+    return new Dialog(options);
   }
 
   /**

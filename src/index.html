@@ -46,7 +46,7 @@
   //document.getElementById("content").innerHTML = htmlStr.join('');
   var dialogObj;
   function dialogView() {
-    dialogObj = new Dialog({
+    dialogObj = Daracl.dialog.create({
       title: 'dialog', width: 500, height: 'auto', icon: "info", isModal: true, resizable: true, autoOpen: false, template: '<a href="https://varsql.com" target="_blank">링크 이동</a>', buttons: [
         {
           label: 'ok', styleClass: "info", callback: function (e) {
@@ -65,7 +65,7 @@
 
     return;
 
-    new Dialog({
+    Daracl.dialog.create({
       title: 'dialog2222', width: 200, height: '150px', isModal1: true, template: 'https://www.naver.com', buttons: [
         {
           label: 'close', styleClass: "info", callback: function (e) {

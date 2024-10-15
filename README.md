@@ -26,7 +26,7 @@ npm run build
 
 # 사용방법
 ```
-var dialogObj = new Dialog({
+var dialogObj = Daracl.dialog.create({
     title: 'dialog', width: 500, height: 'auto', icon: "info", isModal: true, resizable: true, autoOpen: false, template: '<a href="https://varsql.com" target="_blank">링크 이동</a>', buttons: [
     {
         label: 'ok', styleClass: "info", callback: function (e) {
