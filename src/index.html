@@ -4,11 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-compatible" content="IE=edge">
-  <title>Dialog Notification - Darainfo</title>
-  <link rel="stylesheet" href="../dist/daracl.dialog.min.css">
-
+  <title>Dialog - Darainfo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <link href="/dist/daracl.dialog.css" rel="stylesheet"/>
 </head>
 
 <body onload="dialogView()">
@@ -24,18 +22,6 @@
 </body>
 
 </html>
-
-<style>
-  .dialog-button button {
-    border: none;
-    outline: none;
-    cursor: pointer;
-    margin: 0 5px;
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    border-radius: 4px;
-  }
-</style>
 
 <script>
   var htmlStr = [];
@@ -63,8 +49,7 @@
       }
     });
 
-    return;
-
+  
     Daracl.dialog.create({
       title: 'dialog2222', width: 200, height: '150px', isModal1: true, template: 'https://www.naver.com', buttons: [
         {

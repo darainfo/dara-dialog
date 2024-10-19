@@ -1,4 +1,4 @@
-@use "_icon.scss";
+@use "_icon" as icon;
 
 .daracl-dialog-hidden {
   visibility: visible;
@@ -9,7 +9,7 @@
 
 .daracl-dialog-overlay {
   background: #aaaaaa;
-  opacity: 0.3;
+  opacity: 0.3; 
   position: fixed;
   top: 0;
   left: 0;
@@ -93,7 +93,7 @@
           display: inline-block;
           cursor: pointer;
           background-repeat: no-repeat;
-          background-image: icon.icon(maximise, "6c6c6c");
+          background-image: icon.get(maximise, "6c6c6c");
         }
         > .dialog-close {
           width: 16px;
@@ -101,7 +101,7 @@
           display: inline-block;
           cursor: pointer;
           background-repeat: no-repeat;
-          background-image: icon.icon(close, "6c6c6c");
+          background-image: icon.get(close, "6c6c6c");
         }
       }
     }
@@ -129,32 +129,32 @@
 
       &.primary {
         padding-left: 45px;
-        background-image: icon.icon(primary, "2496ed");
+        background-image: icon.get(primary, "2496ed");
       }
 
       &.secondary {
         padding-left: 45px;
-        background-image: icon.icon(secondary, "2496ed");
+        background-image: icon.get(secondary, "2496ed");
       }
 
       &.info {
         padding-left: 45px;
-        background-image: icon.icon(info, "2496ed");
+        background-image: icon.get(info, "2496ed");
       }
 
       &.success {
         padding-left: 45px;
-        background-image: icon.icon(success, "493fff");
+        background-image: icon.get(success, "493fff");
       }
 
       &.warning {
         padding-left: 45px;
-        background-image: icon.icon(warning, "e18787");
+        background-image: icon.get(warning, "e18787");
       }
 
       &.danger {
         padding-left: 45px;
-        background-image: icon.icon(danger, "ef2e40");
+        background-image: icon.get(danger, "ef2e40");
       }
 
       > .dialog-content {

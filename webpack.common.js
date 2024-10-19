@@ -18,16 +18,18 @@ const topBanner = `/*!
 process.env.TOP_BANNER = topBanner;
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    index: ["./src/index.js"]
+  },
   target: ["web", "es5"],
   output: {
     path: path.join(__dirname, "dist"),
+    filename: "daracl.dialog.js",
     library: {
       name: ["Daracl", "dialog"],
       type: "var",
       export: "default",
     },
-    filename: "daracl.dialog.js",
     libraryTarget: "umd",
   },
 
@@ -52,7 +54,7 @@ module.exports = {
         use: ["babel-loader", "ts-loader"],
       },
       {
-        test: /\.js|\.jsx$$/u,
+        test: /\.js$|\.jsx$/u,
         exclude: /node_modules/u,
         include: path.resolve(__dirname, "src"),
         use: {
@@ -62,7 +64,7 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /node_modules/u,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },

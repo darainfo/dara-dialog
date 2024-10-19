@@ -40,6 +40,25 @@ module.exports = merge(common, {
       }),
     ],
   },
+  module: {
+    rules: [
+      {
+        test: /\.(sa|sc|c)ss$/i,
+        //exclude: /node_modules/u,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: require("sass"), // Prefer `dart-sass`
+            },
+          },
+        ],
+        //use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
   output: {
     filename: common.output.filename.replace(/\.js$/, ".min.js"),
   },
