@@ -39,6 +39,7 @@
     "style"
   ],
   "dependencies": {
+    "sass-embedded": "^1.80.3",
     "typescript": "^5.1.6"
   },
   "prettier": {

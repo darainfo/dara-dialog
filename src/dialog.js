@@ -1,6 +1,3 @@
-
-import "../style/daracl.dialog.scss";
-
 let DIALOG_IDX = 0;
 
 const iconStyleMap = {

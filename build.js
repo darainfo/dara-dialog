@@ -2,6 +2,9 @@ const esbuild = require("esbuild");
 
 const { sassPlugin } = require("esbuild-sass-plugin");
 
+const sass = require('sass');
+
+
 const baseConfig = {
   entryPoints: ["src/index.js"],
   outdir: "dist",

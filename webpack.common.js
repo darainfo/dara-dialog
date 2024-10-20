@@ -23,7 +23,7 @@ module.exports = {
   },
   target: ["web", "es5"],
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.resolve (__dirname, "dist"),
     filename: "daracl.dialog.js",
     library: {
       name: ["Daracl", "dialog"],
