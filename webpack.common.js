@@ -19,15 +19,15 @@ process.env.TOP_BANNER = topBanner;
 
 module.exports = {
   entry: {
-    index: ["./src/index.js"]
+    index: ["./src/index.js"],
   },
   target: ["web", "es5"],
   output: {
-    path: path.resolve (__dirname, "dist"),
+    path: path.resolve(__dirname, "dist"),
     filename: "daracl.dialog.js",
     library: {
       name: ["Daracl", "dialog"],
-      type: "var",
+      type: "window",
       export: "default",
     },
     libraryTarget: "umd",
