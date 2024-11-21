@@ -9,8 +9,6 @@ const iconStyleMap = {
   danger: "danger",
 };
 
-
-
 /**
  * 다이얼로그 옵션
  * @typedef {Object} defaultOptions
@@ -72,7 +70,7 @@ function dialogHiddenElement() {
   if (document.getElementById("daraclDialogHidden") == null) {
     document.querySelector("body")?.insertAdjacentHTML("beforeend", `<div id="daraclDialogHidden" class="daracl-dialog-hidden"></div>`);
   }
- 
+
   return document.getElementById("daraclDialogHidden");
 }
 
@@ -457,9 +455,8 @@ export default class Dialog {
    * @returns
    */
   show = () => {
-
-    if(!this.dialogWrapperElement.classList.contains("hide")){
-      return ; 
+    if (!this.dialogWrapperElement.classList.contains("hide")) {
+      return;
     }
 
     this.dialogWrapperElement.classList.remove("hide");
@@ -499,14 +496,13 @@ export default class Dialog {
     }
   };
 
-  removeDialogOverrayElement(){
-    if(typeof this.dialogOverrayElement ==='undefined') return ;
+  removeDialogOverrayElement() {
+    if (typeof this.dialogOverrayElement === "undefined") return;
 
     dialogHiddenElement().removeChild(this.dialogOverrayElement);
 
-    this.dialogOverrayElement = undefined; 
+    this.dialogOverrayElement = undefined;
   }
-
 
   /**
    * maximise hide
